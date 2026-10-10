@@ -1,0 +1,2 @@
+package com.bookstore.bike.config; import org.springframework.beans.factory.annotation.Value; import org.springframework.context.annotation.*; import org.springframework.web.servlet.config.annotation.*;
+@Configuration public class WebConfig implements WebMvcConfigurer {@Value("${campusride.cors-origin}")String origin; public void addCorsMappings(CorsRegistry r){r.addMapping("/api/**").allowedOriginPatterns(origin.split(",")).allowedMethods("GET","POST","PUT","PATCH","DELETE","OPTIONS").allowedHeaders("*");}}
