@@ -8,8 +8,8 @@ services:
     name: bikemate-api
     runtime: docker
     rootDir: Bike_Back
-    dockerfilePath: Bike_Back/Dockerfile
-    dockerContext: Bike_Back
+    dockerfilePath: Dockerfile
+    dockerContext: .
     healthCheckPath: /api/bikes
     envVars:
       - key: CORS_ORIGIN
