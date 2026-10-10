@@ -3,8 +3,9 @@ import{createRoot}from'react-dom/client';
 import{Bike,Clock3,KeyRound,LogOut,Plus,ShieldCheck,Timer,UserRound,Users,History,ArrowRight,MapPin,CheckCircle2,AlertTriangle}from'lucide-react';
 import'./styles.css';import'./bikemate.css';
 
-const configuredApi=import.meta.env.VITE_API_URL?.trim();
-const API=(configuredApi||(import.meta.env.DEV?'/api':'')).replace(/\/$/,'');
+const configuredApi=(import.meta.env.VITE_API_URL||import.meta.env.VITE_API)?.trim();
+const apiBase=(configuredApi||(import.meta.env.DEV?'/api':'https://bike-rental-152k.onrender.com/api')).replace(/\/$/,'');
+const API=apiBase.endsWith('/api')?apiBase:`${apiBase}/api`;
 async function api(path,options={}){if(!API)throw Error('The backend URL is not configured. In Vercel, set VITE_API_URL to your Render API URL ending in /api, then redeploy.');let response;try{response=await fetch(API+path,{...options,headers:{'Content-Type':'application/json',...(localStorage.getItem('token')?{Authorization:`Bearer ${localStorage.getItem('token')}`}:{})}})}catch{throw Error('The BikeMate API could not be reached. Check the Render service URL and its CORS_ORIGIN setting.')}const contentType=response.headers.get('content-type')||'';const body=contentType.includes('application/json')?await response.json().catch(()=>({})):null;if(!response.ok){const error=Error(body?.detail||body?.message||body?.error||`Request failed (${response.status})`);error.status=response.status;throw error}if(body===null)throw Error('The backend returned a non-JSON response. Check that VITE_API_URL points to the Render API and ends in /api.');return body}
 const money=paise=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR'}).format((paise||0)/100);
 const duration=seconds=>{const n=Math.max(0,Math.floor(seconds||0));return`${String(Math.floor(n/3600)).padStart(2,'0')}:${String(Math.floor(n%3600/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`};
